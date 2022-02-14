@@ -231,8 +231,8 @@ button {
          dodrop(event);">
         <ol>
             <li>Drag and drop uncompressed NIfTI file here or <input type="file" onChange="uploaded()" id="fileuploadform"/></li>
-            <li>Set simplify ratio to <input type="range" min="1" max="99" value="50" id="slider" step="1" oninput="update_simplify_to()"><span id="percentage">50</span>% </li>
-            <li>Click <button onclick="uploaded()">Convert</button></li>
+            <li>Mesh reduction percent <input type="range" min="1" max="100" value="50" id="slider" step="1" oninput="update_simplify_to()"><span id="percentage">50</span>% NIfTI: <span id="size">??</span>Mb</li>
+            <li>Click <button onclick="uploaded()">Convert to Mesh</button></li>
         </ol>
         <span id="status_span">Status: <span id="status">Waiting for upload</span>
     </div>
@@ -260,7 +260,7 @@ button {
 
     <div id="log"></div>
 
-    <a href="https://github.com/rordenlab/nii2meshWeb"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a>
+    <a href="https://github.com/MyMiniFactory/Fast-Quadric-Mesh-Simplification"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a>
 </body>
 
 </html>

@@ -16,6 +16,24 @@
 
 <style>
 
+.row {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.inset-row {
+	display: flex;
+	flex-direction: row;
+	margin-left: 20px;
+	align-items: center;
+}
+
+.col {
+	display: flex;
+	flex-direction: column;
+}
+
 #dragAndDrop {
     min-height: 200px;
     white-space: pre-line;
@@ -144,7 +162,7 @@ button {
                 return this.blob.size;
         },
         get exists() {
-            if (this.blob)
+            if (typeof this.blob !== 'undefined')
                 return true;
             else {
                 return false;
@@ -154,15 +172,21 @@ button {
 
 
     function update_simplify_to() {
-        const slider_value = get_value_from_slider();
+        const slider_value = get_value_from_slider('slider');
         document.getElementById('percentage').innerHTML = slider_value;
         if (SIMPLIFY_FILE.exists) {
             document.getElementById('size').innerHTML = Math.ceil(slider_value * SIMPLIFY_FILE.size/(100*1024*1024));
         }
     }
 
-    function get_value_from_slider() {
-        return document.getElementById('slider').valueAsNumber;
+		function update_postSmooth_to() {
+        const slider_value = get_value_from_slider('postSmooth');
+        document.getElementById('postSmoothVal').innerHTML = slider_value;
+    }
+
+
+    function get_value_from_slider(id) {
+        return document.getElementById(id).valueAsNumber;
     }
 
     function uploaded(file) {
@@ -203,7 +227,12 @@ button {
         put_status("Simplifying by your browser...See log below");
         worker.postMessage(
             {"blob":SIMPLIFY_FILE.blob,
-             "percentage": get_value_from_slider()/100,
+             "percentage": get_value_from_slider('slider')/100,
+						 "isoDarkMediumBright123": document.getElementById('isoDarkMediumBright123').value,
+						 "preSmooth": document.getElementById('preSmooth').checked,
+						 "onlyLargest": document.getElementById('onlyLargest').checked,
+						 "fillBubbles": document.getElementById('fillBubbles').checked,
+						 "postSmooth": get_value_from_slider('postSmooth'),
              "simplify_name": SIMPLIFY_FILE.simplify_name
             }
         );
@@ -237,6 +266,33 @@ button {
         <ol>
             <li>Drag and drop NIfTI file here or <input type="file" onChange="uploaded()" id="fileuploadform"/></li>
             <li>Mesh reduction percent <input type="range" min="1" max="100" value="50" id="slider" step="1" oninput="update_simplify_to()"><span id="percentage">50</span>% NIfTI: <span id="size">??</span>Mb</li>
+						<li> options:
+							<div class="col">
+								<div class="inset-row">
+									<p>isoDarkMediumBright</p>
+									<input style="margin-left: 10px; width: 40px;" type="number" name="isoDarkMediumBright123" id="isoDarkMediumBright123" min="1" max="3" step="1" value="2">
+								</div>
+								<div class="inset-row">
+									<p>preSmooth</p>
+									<input type="checkbox" name="preSmooth" id="preSmooth" checked>
+								</div>
+								<div class="inset-row">
+									<p>onlyLargest</p>
+									<input type="checkbox" name="onlyLargest" id="onlyLargest">
+								</div>
+								<div class="inset-row">
+									<p>fillBubbles</p>
+									<input type="checkbox" name="fillBubbles" id="fillBubbles" >
+								</div>
+								<div class="inset-row">
+									<p>postSmooth</p>
+									<input type="range" min="0" max="4096" value="0" id="postSmooth" step="1" oninput="update_postSmooth_to()">
+									<p id="postSmoothVal"></p>
+								</div>
+
+
+							</div>
+						</li>
             <li>Click <button onclick="uploaded()">Convert to Mesh</button></li>
         </ol>
         <span id="status_span">Status: <span id="status">Waiting for upload</span>

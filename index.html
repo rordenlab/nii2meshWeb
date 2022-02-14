@@ -2,15 +2,6 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-115758488-2"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'UA-115758488-2');
-    </script>
 
 </head>
 
@@ -112,7 +103,7 @@ button {
 
         const file = e.data.blob;
         if (file !== undefined) {
-            const s_name = SIMPLIFY_FILE.simplify_name;
+            const s_name = get_meshname(SIMPLIFY_FILE.name); //SIMPLIFY_FILE.simplify_name;
 
             let url = window.URL.createObjectURL(file);
 
@@ -141,21 +132,22 @@ button {
         );
     }
 
+    function get_meshname(filename) { //simplify_name
+        var e = document.getElementById("meshFormat");
+        var meshExt = e.options[e.selectedIndex].value;
+        const extension = filename.toLowerCase().slice(filename.lastIndexOf(".")+1, filename.length);
+        if (extension==="gz") {
+            return "nii2mesh_"+filename.split('.').slice(0, -1).join('.').split('.').slice(0, -1).join('.')+"."+meshExt
+        }
+        return "nii2mesh_"+filename.split('.').slice(0, -1).join('.')+"."+meshExt
+    }
+
+
     let SIMPLIFY_FILE = {
         'blob': undefined,
         get name(){
             if (this.exists)
                 return this.blob.name;
-        },
-        get simplify_name() {
-            if (this.exists) {
-                let filename = this.name
-                const extension = filename.toLowerCase().slice(filename.lastIndexOf(".")+1, filename.length);
-                if (extension==="gz") {
-                    return "nii2mesh_"+filename.split('.').slice(0, -1).join('.').split('.').slice(0, -1).join('.')+".obj"
-                }
-                return "nii2mesh_"+filename.split('.').slice(0, -1).join('.')+".obj"
-            }
         },
         get size() {
             if (this.exists)
@@ -170,7 +162,6 @@ button {
         }
     }
 
-
     function update_simplify_to() {
         const slider_value = get_value_from_slider('slider');
         document.getElementById('percentage').innerHTML = slider_value;
@@ -179,7 +170,7 @@ button {
         }
     }
 
-		function update_postSmooth_to() {
+    function update_postSmooth_to() {
         const slider_value = get_value_from_slider('postSmooth');
         document.getElementById('postSmoothVal').innerHTML = slider_value;
     }
@@ -228,12 +219,12 @@ button {
         worker.postMessage(
             {"blob":SIMPLIFY_FILE.blob,
              "percentage": get_value_from_slider('slider')/100,
-						 "isoDarkMediumBright123": document.getElementById('isoDarkMediumBright123').value,
-						 "preSmooth": document.getElementById('preSmooth').checked,
-						 "onlyLargest": document.getElementById('onlyLargest').checked,
-						 "fillBubbles": document.getElementById('fillBubbles').checked,
-						 "postSmooth": get_value_from_slider('postSmooth'),
-             "simplify_name": SIMPLIFY_FILE.simplify_name
+             "isoDarkMediumBright123": document.getElementById('isoDarkMediumBright123').value,
+             "preSmooth": document.getElementById('preSmooth').checked,
+             "onlyLargest": document.getElementById('onlyLargest').checked,
+             "fillBubbles": document.getElementById('fillBubbles').checked,
+             "postSmooth": get_value_from_slider('postSmooth'),
+             "simplify_name": get_meshname(SIMPLIFY_FILE.name)
             }
         );
     }
@@ -265,34 +256,47 @@ button {
          dodrop(event);">
         <ol>
             <li>Drag and drop NIfTI file here or <input type="file" onChange="uploaded()" id="fileuploadform"/></li>
-            <li>Mesh reduction percent <input type="range" min="1" max="100" value="50" id="slider" step="1" oninput="update_simplify_to()"><span id="percentage">50</span>% NIfTI: <span id="size">??</span>Mb</li>
-						<li> options:
-							<div class="col">
-								<div class="inset-row">
-									<p>isoDarkMediumBright</p>
-									<input style="margin-left: 10px; width: 40px;" type="number" name="isoDarkMediumBright123" id="isoDarkMediumBright123" min="1" max="3" step="1" value="2">
-								</div>
-								<div class="inset-row">
-									<p>preSmooth</p>
-									<input type="checkbox" name="preSmooth" id="preSmooth" checked>
-								</div>
-								<div class="inset-row">
-									<p>onlyLargest</p>
-									<input type="checkbox" name="onlyLargest" id="onlyLargest">
-								</div>
-								<div class="inset-row">
-									<p>fillBubbles</p>
-									<input type="checkbox" name="fillBubbles" id="fillBubbles" >
-								</div>
-								<div class="inset-row">
-									<p>postSmooth</p>
-									<input type="range" min="0" max="4096" value="0" id="postSmooth" step="1" oninput="update_postSmooth_to()">
-									<p id="postSmoothVal"></p>
-								</div>
 
-
-							</div>
-						</li>
+                    <li> Options:
+                        <div class="col">
+                            <div class="inset-row">
+                                <p>Iso-level (dark, medium, bright)</p>
+                                <input style="margin-left: 10px; width: 40px;" type="number" name="isoDarkMediumBright123" id="isoDarkMediumBright123" min="1" max="3" step="1" value="2">
+                            </div>
+                            <div class="inset-row">
+                                <p>Pre-smooth </p>
+                                <input type="checkbox" name="preSmooth" id="preSmooth" checked>
+                            </div>
+                            <div class="inset-row">
+                                <p>Only retain largest single cluster </p>
+                                <input type="checkbox" name="onlyLargest" id="onlyLargest">
+                            </div>
+                            <div class="inset-row">
+                                <p>Fill internal bubbles </p>
+                                <input type="checkbox" name="fillBubbles" id="fillBubbles" >
+                            </div>
+                            <div class="inset-row">
+                                <p>Mesh reduction percent</p>
+                                <input type="range" min="1" max="100" value="25" id="slider" step="1" oninput="update_simplify_to()">&nbsp;<span id="percentage">25</span>%&nbsp;NIfTI mb: <span id="size">??</span> 
+                            </div>
+                            <div class="inset-row">
+                                <p>Post-smoothing iterations </p>
+                                <input type="range" min="0" max="4096"  step="1" value="0" id="postSmooth" oninput="update_postSmooth_to()">
+                                <p id="postSmoothVal"></p>
+                            </div>
+                            <div class="inset-row">
+                                <p>Mesh format</p>
+                                <select id="meshFormat" name="Mesh format"">
+                                    <option value="obj">obj</option>
+                                    <option value="gii">GIfTI</option>
+                                    <option value="mz3">mz3</option>
+                                    <option value="ply">ply</option>
+                                    <option value="stl">stl</option>
+                                    <option value="vtk">vtk</option>
+                                </select>
+                            </div>
+                        </div>
+                    </li>
             <li>Click <button onclick="uploaded()">Convert to Mesh</button></li>
         </ol>
         <span id="status_span">Status: <span id="status">Waiting for upload</span>

@@ -1,6 +1,6 @@
 ## About
 
-This web page uses web assembly to convert a voxel-based NIfTI image (*.nii) to a triangle-based mesh in [OBJ](https://en.wikipedia.org/wiki/Wavefront_.obj_file) format. For more details, see [nii2mesh](https://github.com/neurolabusc/nii2mesh).
+This web page uses web assembly to convert a voxel-based NIfTI image (*.nii; .nii.gz) to a triangle-based mesh in [OBJ](https://en.wikipedia.org/wiki/Wavefront_.obj_file) format. For more details, see [nii2mesh](https://github.com/neurolabusc/nii2mesh).
 
 ## Live Demo
 
@@ -19,7 +19,7 @@ http-server
 
 ## Limitations
 
-This is a minimal demonstration project. The parent [nii2mesh](https://github.com/neurolabusc/nii2mesh) project includes many more adjustments. This minimal project can only read uncompressed NIfTI images (.nii), and it is unable to read dual-file NIfTI (.hdr/.img) or compressed NIfTI (.nii.gz). It only exports .obj format meshes.
+This is a minimal demonstration project. The parent [nii2mesh](https://github.com/neurolabusc/nii2mesh) project includes many more adjustments. This minimal project can only read single file NIfTI images (.nii; .nii.gz). It only exports .obj format meshes.
 
 ## Links
 

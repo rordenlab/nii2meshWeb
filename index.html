@@ -148,8 +148,14 @@ button {
                 return this.blob.name;
         },
         get simplify_name() {
-            if (this.exists)
-                return "simplify_"+this.name+".obj";
+            if (this.exists) {
+                let filename = this.name
+                const extension = filename.toLowerCase().slice(filename.lastIndexOf(".")+1, filename.length);
+                if (extension==="gz") {
+                    return "nii2mesh_"+filename.split('.').slice(0, -1).join('.').split('.').slice(0, -1).join('.')+".obj"
+                }
+                return "nii2mesh_"+filename.split('.').slice(0, -1).join('.')+".obj"
+            }
         },
         get size() {
             if (this.exists)
@@ -209,9 +215,8 @@ button {
         put_status("Checking file");
         const filename = SIMPLIFY_FILE.name;
         const extension = filename.toLowerCase().slice(filename.lastIndexOf(".")+1, filename.length);
-        //if (extension!=="stl" && extension!=="obj") {
-        if (extension!=="nii") {
-            put_status("Please upload an uncompressed NIfTI .nii file not "+ extension);
+        if (extension!=="nii" && extension!=="gz") {
+            put_status("Please upload an NIfTI (.nii; .nii.gz) file not "+ extension);
             return;
         }
         success_cb();
@@ -259,7 +264,7 @@ button {
          ondrop="event.stopPropagation(); event.preventDefault();
          dodrop(event);">
         <ol>
-            <li>Drag and drop uncompressed NIfTI file here or <input type="file" onChange="" id="fileuploadform"/></li>
+            <li>Drag and drop NIfTI file here or <input type="file" onChange="uploaded()" id="fileuploadform"/></li>
             <li>Mesh reduction percent <input type="range" min="1" max="100" value="50" id="slider" step="1" oninput="update_simplify_to()"><span id="percentage">50</span>% NIfTI: <span id="size">??</span>Mb</li>
 						<li> options:
 							<div class="col">

@@ -17,10 +17,6 @@ make wasm
 http-server
 ```
 
-## Limitations
-
-This is a minimal demonstration project. The parent [nii2mesh](https://github.com/neurolabusc/nii2mesh) project includes many more adjustments. This minimal project can only read single file NIfTI images (.nii; .nii.gz). It only exports .obj format meshes.
-
 ## Links
 
  - [nii2mesh](https://github.com/neurolabusc/nii2mesh) provides details on the code.

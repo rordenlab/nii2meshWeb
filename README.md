@@ -19,5 +19,5 @@ http-server
 
 ## Links
 
- - [nii2mesh](https://github.com/neurolabusc/nii2mesh) provides details on the code.
- - The web page and javascript code is based on work by [MyMiniFactory](https://github.com/MyMiniFactory/Fast-Quadric-Mesh-Simplification).
+ - [nii2mesh](https://github.com/neurolabusc/nii2mesh) provides details on the core code.
+ - Web page and javascript wrapper based on work by [MyMiniFactory](https://github.com/MyMiniFactory/Fast-Quadric-Mesh-Simplification).

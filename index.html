@@ -287,10 +287,10 @@ function getFloat(id) {
         <ol>
             <li>Drag and drop NIfTI file here or <input type="file" onChange="uploaded()" id="fileuploadform"/></li>
 
-                    <li> Options:
+                    <li><a href="https://github.com/neurolabusc/nii2mesh">Options:</a>
                         <div class="col">
                             <div class="inset-row">
-                                <p>Isolevel</p>&nbsp;
+                                <p>Isolevel &nbsp;</p>&nbsp;
                                 <select id="isoDarkMediumBright123" name="Isolevel" onChange="customIsoHandler()">
                                     <option value="1">Dark</option>
                                     <option value="2" selected>Medium</option>
@@ -321,7 +321,7 @@ function getFloat(id) {
                                 <p id="postSmoothVal"></p>
                             </div>
                             <div class="inset-row">
-                                <p>Mesh format</p>
+                                <p>Mesh format &nbsp;</p>
                                 <select id="meshFormat" name="Mesh format">
                                     <option value="obj">obj</option>
                                     <option value="gii">GIfTI</option>
@@ -350,14 +350,6 @@ function getFloat(id) {
         </div>
     </div>
     <div id="log"></div>
-    <div id="note_box">
-        <h3>Notes</h3>
-        <ul>
-            <li>For help with options see <a href="https://github.com/neurolabusc/nii2mesh">nii2mesh</a></li>
-            <li>Uses <a href="https://github.com/MyMiniFactory/Fast-Quadric-Mesh-Simplification">WebAssembly</a> <a href="https://github.com/sp4cerat/Fast-Quadric-Mesh-Simplification">Simplification</a></li>
-        </ul>
-    </div>
-
     <a href="https://github.com/rordenlab/nii2meshWeb"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a>
 </body>
 

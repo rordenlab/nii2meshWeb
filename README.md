@@ -1,6 +1,6 @@
 ## About
 
-This web page uses web assembly to convert a voxel-based NIfTI image (*.nii; .nii.gz) to a triangle-based mesh in [OBJ](https://en.wikipedia.org/wiki/Wavefront_.obj_file) format. For more details, see [nii2mesh](https://github.com/neurolabusc/nii2mesh).
+This web page uses web assembly to convert a voxel-based NIfTI image (.nii; .nii.gz) to a triangle-based mesh format (.gii, .mz3, .obj, .ply, .stl, .vtk). For more details, see [nii2mesh](https://github.com/neurolabusc/nii2mesh).
 
 ## Live Demo
 

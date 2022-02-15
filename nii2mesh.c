@@ -214,14 +214,15 @@ int nii2 (nifti_1_header hdr, float * img, int originalMC, float isolevel, float
 #ifdef __EMSCRIPTEN__
 
 extern "C" {
-int simplify(const char* file_path, int isoDarkMediumBright123, int preSmooth, int onlyLargest, int fillBubbles, int postSmooth, float reduceFraction, const char* export_path) {
+int simplify(const char* file_path, int quality, float isolevel, int isoDarkMediumBright123, int preSmooth, int onlyLargest, int fillBubbles, int postSmooth, float reduceFraction, const char* export_path) {
 	printf("Going to meshify %s as %s\n", file_path, export_path);
-	//int isoDarkMediumBright123 = 2;
+	//int quality = 1; //0=fast/nocompression,1=balanced,2=slow/best
+	//float isolevel = ??; //intensity for mesh surface
+	//int isoDarkMediumBright123 = 2; //if 1-3, override isolevel and use Otsu intensity
 	//int preSmooth = true;
 	//bool onlyLargest = true;
 	//bool fillBubbles = false;
 	//int postSmooth = 0;
-	int quality = 1;
 	int originalMC = 1;
 	bool verbose = true;
 	nifti_1_header hdr;
@@ -230,7 +231,8 @@ int simplify(const char* file_path, int isoDarkMediumBright123, int preSmooth, i
 	if (verbose)
 		printf("load from disk: %ld ms\n", timediff(startTime, clockMsec()));
 	int nvox = (hdr.dim[1] * hdr.dim[2] * hdr.dim[3]);
-	float isolevel = setThreshold(img, nvox, isoDarkMediumBright123);
+	if ((isoDarkMediumBright123 >= 1) && (isoDarkMediumBright123 <= 3))
+		isolevel = setThreshold(img, nvox, isoDarkMediumBright123);
 	int ret = nii2(hdr, img, originalMC, isolevel, reduceFraction, preSmooth, onlyLargest, fillBubbles, postSmooth, verbose, export_path, quality);
 	free(img);
 	return(ret);

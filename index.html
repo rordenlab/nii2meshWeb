@@ -175,6 +175,31 @@ button {
         document.getElementById('postSmoothVal').innerHTML = slider_value;
     }
 
+function getFloat(id) {
+    let str = document.getElementById(id).value;
+    return parseFloat(str.replace(',','.').replace(' ','')) //handle comma decimal separator
+}
+
+    function customIsoHandler() {
+      let isoSelect = document.getElementById('isoDarkMediumBright123')
+      let custom = document.getElementById('customIsoLevel')
+      let customIsoLevel = document.getElementById('customIsoLevel')
+      if (isoSelect.value === "4") {
+        customIsoLevel.style.display = "block"
+      } else {
+        customIsoLevel.style.display = "none"
+      }
+    }
+
+    function onlyNumberKey(evt) {
+        // Only ASCII character in that range allowed 46= period, 44 = comma 
+        var ASCIICode = (evt.which) ? evt.which : evt.keyCode
+        if (ASCIICode > 31 && (ASCIICode < 44 || ASCIICode > 57))
+            return false;
+        if (ASCIICode === 47) // "/"
+            return false;
+        return true;
+    }
 
     function get_value_from_slider(id) {
         return document.getElementById(id).valueAsNumber;
@@ -216,9 +241,13 @@ button {
     function post_to_worker() {
         update_simplify_to();
         put_status("Simplifying by your browser...See log below");
+        var logger = document.getElementById('simplify_log');
+        logger.innerHTML = ''; //clear old messages
         worker.postMessage(
             {"blob":SIMPLIFY_FILE.blob,
              "percentage": get_value_from_slider('slider')/100,
+             "quality": 1,
+             "isolevel": getFloat('customIsoLevel'),
              "isoDarkMediumBright123": document.getElementById('isoDarkMediumBright123').value,
              "preSmooth": document.getElementById('preSmooth').checked,
              "onlyLargest": document.getElementById('onlyLargest').checked,
@@ -242,6 +271,7 @@ button {
 
     function init() {
         update_simplify_to();
+        customIsoHandler();
     }
 
     window.onload = init;
@@ -260,9 +290,15 @@ button {
                     <li> Options:
                         <div class="col">
                             <div class="inset-row">
-                                <p>Iso-level (dark, medium, bright)</p>
-                                <input style="margin-left: 10px; width: 40px;" type="number" name="isoDarkMediumBright123" id="isoDarkMediumBright123" min="1" max="3" step="1" value="2">
-                            </div>
+                                <p>Isolevel</p>&nbsp;
+                                <select id="isoDarkMediumBright123" name="Isolevel" onChange="customIsoHandler()">
+                                    <option value="1">Dark</option>
+                                    <option value="2" selected>Medium</option>
+                                    <option value="3">Bright</option>
+                                    <option value="4">Custom</option>
+                                </select>
+                                &nbsp;<input type="text" id="customIsoLevel" value="0.5" onkeypress="return onlyNumberKey(event)"><br>
+                            </div> 
                             <div class="inset-row">
                                 <p>Pre-smooth </p>
                                 <input type="checkbox" name="preSmooth" id="preSmooth" checked>
@@ -286,7 +322,7 @@ button {
                             </div>
                             <div class="inset-row">
                                 <p>Mesh format</p>
-                                <select id="meshFormat" name="Mesh format"">
+                                <select id="meshFormat" name="Mesh format">
                                     <option value="obj">obj</option>
                                     <option value="gii">GIfTI</option>
                                     <option value="mz3">mz3</option>

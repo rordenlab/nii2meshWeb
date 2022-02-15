@@ -278,7 +278,7 @@ function getFloat(id) {
 </script>
 
 <body>
-    <h1>NIfTI to Mesh conversion</h1>
+    <h3>NIfTI to Mesh conversion</h3>
     <div id="dragAndDrop"
          ondragenter="event.stopPropagation(); event.preventDefault();"
          ondragover="event.stopPropagation(); event.preventDefault();"
@@ -341,25 +341,22 @@ function getFloat(id) {
         <a id="download_a" hidden></a>
         <button id="download" disabled onclick="document.getElementById('download_a').click()">Nothing to download yet...</button>
     </div>
-    <div id="info">
-        <div id="note_box">
-            <h3>Notes</h3>
-            <ul>
-                <li>Based on <a href="https://github.com/neurolabusc/nii2mesh">nii2mesh</a></li>
-                <li>Uses <a href="https://github.com/MyMiniFactory/Fast-Quadric-Mesh-Simplification">WebAssembly</a> <a href="https://github.com/sp4cerat/Fast-Quadric-Mesh-Simplification">Simplification</a></li>
-            </ul>
-        </div>
-        <div>
-            <h3>Simplification Process Log</h3>
-                <div id="simplify_box">
-                    <ul id="simplify_log">
-                    </ul>
-                </div>
+    <div>
+        <h3>Simplification Process Log</h3>
+            <div id="simplify_box">
+                <ul id="simplify_log">
+                </ul>
             </div>
         </div>
     </div>
-
     <div id="log"></div>
+    <div id="note_box">
+        <h3>Notes</h3>
+        <ul>
+            <li>For help with options see <a href="https://github.com/neurolabusc/nii2mesh">nii2mesh</a></li>
+            <li>Uses <a href="https://github.com/MyMiniFactory/Fast-Quadric-Mesh-Simplification">WebAssembly</a> <a href="https://github.com/sp4cerat/Fast-Quadric-Mesh-Simplification">Simplification</a></li>
+        </ul>
+    </div>
 
     <a href="https://github.com/rordenlab/nii2meshWeb"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a>
 </body>

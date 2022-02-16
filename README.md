@@ -20,4 +20,6 @@ http-server
 ## Links
 
  - [nii2mesh](https://github.com/neurolabusc/nii2mesh) provides details on the core code.
+ - [vtk.js](https://kitware.github.io/vtk-js/examples/ImageMarchingCubes.html) provides an alternate method for marching cubes.
+ - Will Usher has created a [rust-based WASM](https://github.com/Twinklebear/webgl-marching-cubes) Marching Cubes with a nice [live demo](https://www.willusher.io/webgl-marching-cubes/#Fuel).
  - Web page and javascript wrapper based on work by [MyMiniFactory](https://github.com/MyMiniFactory/Fast-Quadric-Mesh-Simplification).
